@@ -15,7 +15,14 @@ def update_currency():
 
 
 def convert(from_, to, amount):
-    return float(redis_client.get(from_ + to)) * float(amount)
+    data = redis_client.get(from_ + to)
+    if data is None:
+        return 1 / float(redis_client.get(to + from_)) * float(amount)
+    else:
+        return float(redis_client.get(from_ + to)) * float(amount)
 
+
+if __name__ == "__main__":
+    print(redis_client)
 
 redis_client.close()

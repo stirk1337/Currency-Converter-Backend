@@ -13,11 +13,9 @@ def get_currency_based_on_rur():
             curs_value[currencies] = cur['Value']/cur['Nominal']
         pairs = {}
         for i in range(len(curs_list)):
-            pairs['RUR' + curs_list[i]] = 1.0/curs_value[curs_list[i]]
             pairs[curs_list[i] + 'RUR'] = curs_value[curs_list[i]]
             for j in range(len(curs_list)):
                 pairs[curs_list[i] + curs_list[j]] = curs_value[curs_list[i]] / curs_value[curs_list[j]]
-                pairs[curs_list[j] + curs_list[i]] = curs_value[curs_list[j]] / curs_value[curs_list[i]]
         return pairs
 
 
