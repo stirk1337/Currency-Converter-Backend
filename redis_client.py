@@ -17,7 +17,6 @@ def update_currency():
 def convert(from_, to, amount):
     data = redis_client.get(from_ + to)
     data_reverse = redis_client.get(to + from_)
-    print(data)
     if data is not None:
         return float(redis_client.get(from_ + to)) * float(amount)
     elif data_reverse is not None:
