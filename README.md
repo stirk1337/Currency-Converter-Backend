@@ -1,8 +1,9 @@
 # localhost:8000
 
 ## Start 
+Run
 ```
-Run docker-compose up
+docker-compose up
 ```
 
 
