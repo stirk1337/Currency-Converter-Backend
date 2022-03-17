@@ -8,6 +8,15 @@ docker-compose up
 
 
 ## Tests
-Tests will run on app startup or you can run it manually with 
+Tests will run on app startup or you can run it manually with test_api.py
+```
+python test_api.py
+```
+or
+```
+pytest test_api.py
+```
+
+
 
 
