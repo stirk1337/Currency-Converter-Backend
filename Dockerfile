@@ -1,11 +1,11 @@
 FROM python
 
-COPY requirements.txt /app/
+WORKDIR /app
+
+COPY requirements.txt ./
 
 RUN pip install -r /app/requirements.txt
 
-COPY . /app
+COPY . .
 
-WORKDIR /app
-
-CMD python -u main.py
+CMD python -u src/main.py
