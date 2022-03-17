@@ -1,10 +1,12 @@
-import aiohttp
 import asyncio
+
+import aiohttp
 
 
 async def request():
     async with aiohttp.ClientSession() as session:
-        async with session.get('https://www.cbr-xml-daily.ru/daily_json.js') as resp:
+        url = 'https://www.cbr-xml-daily.ru/daily_json.js'
+        async with session.get(url) as resp:
             return await resp.json(content_type=None)
 
 
@@ -21,9 +23,10 @@ def get_currency_based_on_rur():
     for i in range(len(curs_list)):
         pairs[curs_list[i] + 'RUR'] = curs_value[curs_list[i]]
         for j in range(len(curs_list)):
-            pairs[curs_list[i] + curs_list[j]] = curs_value[curs_list[i]] / curs_value[curs_list[j]]
+            pairs[curs_list[i] + curs_list[j]
+                  ] = curs_value[curs_list[i]] / curs_value[curs_list[j]]
     return pairs
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     print(get_currency_based_on_rur())
