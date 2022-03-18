@@ -24,7 +24,8 @@ async def convert(request):
         from_ = request.query['from']
         to = request.query['to']
         amount = request.query['amount']
-        return aiohttp.web.json_response({'status': 'OK',
-                                          'answer': round(redis_client.convert(from_, to, amount), 2)})
+        return aiohttp.web.json_response(
+            {'status': 'OK',
+             'answer': round(redis_client.convert(from_, to, amount), 2)})
     except (KeyError, ValueError):
         return aiohttp.web.json_response({'status': 'Something went wrong'})
