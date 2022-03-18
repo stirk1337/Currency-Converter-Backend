@@ -2,7 +2,6 @@ import aiohttp_requests
 import pytest
 import redis
 
-
 redis_client = redis.Redis('redis_service', 6379, 0)
 
 
@@ -14,7 +13,8 @@ def test_db():
 
 @pytest.mark.asyncio
 async def test_ping_route():
-    response = await aiohttp_requests.requests.get('http://localhost:8080/ping')
+    url = 'http://localhost:8080/ping'
+    response = await aiohttp_requests.requests.get(url)
     answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
     assert answer['answer'] == 'pong'
@@ -22,22 +22,24 @@ async def test_ping_route():
 
 @pytest.mark.asyncio
 async def test_merge_equals_zero():
-    response = await aiohttp_requests.requests.post('http://localhost:8080/database?merge=0')
+    url = 'http://localhost:8080/database?merge=0'
+    response = await aiohttp_requests.requests.post(url)
     answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
 
 
 @pytest.mark.asyncio
 async def test_merge_equals_one():
-    response = await aiohttp_requests.requests.post('http://localhost:8080/database?merge=1')
+    url = 'http://localhost:8080/database?merge=1'
+    response = await aiohttp_requests.requests.post(url)
     answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
 
 
 @pytest.mark.asyncio
 async def test_2_eur_to_rur():
-    response = await aiohttp_requests.requests.get(
-        'http://localhost:8080/convert?from=EUR&to=RUR&amount=2')
+    url = 'http://localhost:8080/convert?from=EUR&to=RUR&amount=2'
+    response = await aiohttp_requests.requests.get(url)
     answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
     assert type(answer['answer']) == float
@@ -62,7 +64,8 @@ async def test_wrong_url():
 
 @pytest.mark.asyncio
 async def test_merge_equals_zero_again():
-    response = await aiohttp_requests.requests.post('http://localhost:8080/database?merge=0')
+    url = 'http://localhost:8080/database?merge=0'
+    response = await aiohttp_requests.requests.post(url)
     answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
 
