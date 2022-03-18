@@ -1,6 +1,7 @@
+import aiohttp_requests
 import pytest
 import redis
-import requests
+
 
 redis_client = redis.Redis('redis_service', 6379, 0)
 
@@ -11,30 +12,39 @@ def test_db():
     redis_client.delete('SOME KEY')
 
 
-def test_ping_route():
-    answer = requests.get('http://localhost:8080/ping').json()
+@pytest.mark.asyncio
+async def test_ping_route():
+    response = await aiohttp_requests.requests.get('http://localhost:8080/ping')
+    answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
     assert answer['answer'] == 'pong'
 
 
-def test_merge_equals_zero():
-    answer = requests.post('http://localhost:8080/database?merge=0').json()
+@pytest.mark.asyncio
+async def test_merge_equals_zero():
+    response = await aiohttp_requests.requests.post('http://localhost:8080/database?merge=0')
+    answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
 
 
-def test_merge_equals_one():
-    answer = requests.post('http://localhost:8080/database?merge=1').json()
+@pytest.mark.asyncio
+async def test_merge_equals_one():
+    response = await aiohttp_requests.requests.post('http://localhost:8080/database?merge=1')
+    answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
 
 
-def test_2_eur_to_rur():
-    answer = requests.get(
-        'http://localhost:8080/convert?from=EUR&to=RUR&amount=2').json()
+@pytest.mark.asyncio
+async def test_2_eur_to_rur():
+    response = await aiohttp_requests.requests.get(
+        'http://localhost:8080/convert?from=EUR&to=RUR&amount=2')
+    answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
     assert type(answer['answer']) == float
 
 
-def test_wrong_url():
+@pytest.mark.asyncio
+async def test_wrong_url():
     tests = [
         ('POST', 'http://localhost:8080/database?me'),
         ('POST', 'http://localhost:8080/database?merge='),
@@ -43,15 +53,17 @@ def test_wrong_url():
     ]
     for method, url in tests:
         if method == 'POST':
-            answer = requests.post(url).json()
+            response = await aiohttp_requests.requests.post(url)
         else:
-            answer = requests.get(url).json()
-        print(answer)
+            response = await aiohttp_requests.requests.get(url)
+        answer = await response.json(content_type=None)
         assert answer['status'] == 'Something went wrong'
 
 
-def test_merge_equals_zero_again():
-    answer = requests.post('http://localhost:8080/database?merge=0').json()
+@pytest.mark.asyncio
+async def test_merge_equals_zero_again():
+    response = await aiohttp_requests.requests.post('http://localhost:8080/database?merge=0')
+    answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
 
 
