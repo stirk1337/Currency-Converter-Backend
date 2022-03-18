@@ -47,7 +47,7 @@ def test_wrong_url():
         else:
             answer = requests.get(url).json()
         print(answer)
-        assert answer["status"] == "Something went wrong"
+        assert answer['status'] == 'Something went wrong'
 
 
 def test_merge_equals_zero_again():

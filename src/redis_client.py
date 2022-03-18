@@ -1,8 +1,8 @@
 import redis
+
 from currency import get_currency_based_on_rur
 
-
-redis_client = redis.Redis("redis_service", 6379, 0)
+redis_client = redis.Redis('redis_service', 6379, 0)
 
 
 def clear_all():
@@ -26,9 +26,9 @@ def convert(from_, to, amount):
         raise KeyError
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from base_logger import logger
     logger.debug(update_currency())
-    logger.debug(convert("AUD", "RUR", 30))
+    logger.debug(convert('AUD', 'RUR', 30))
 
 redis_client.close()

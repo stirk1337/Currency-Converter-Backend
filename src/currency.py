@@ -1,4 +1,5 @@
 import asyncio
+
 import aiohttp_requests
 import nest_asyncio
 
@@ -31,4 +32,3 @@ def get_currency_based_on_rur():
 if __name__ == '__main__':
     from base_logger import logger
     logger.debug(get_currency_based_on_rur())
-
