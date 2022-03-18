@@ -1,6 +1,8 @@
 import pytest
 import requests
-from redis_client import redis_client
+import redis
+
+redis_client = redis.Redis("redis_service", 6379, 0)
 
 
 def test_db():

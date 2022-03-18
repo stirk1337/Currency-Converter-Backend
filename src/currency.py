@@ -1,17 +1,18 @@
 import asyncio
-import aiohttp
+import aiohttp_requests
+import nest_asyncio
 
 
 async def request():
-    async with aiohttp.ClientSession() as session:
-        url = 'https://www.cbr-xml-daily.ru/daily_json.js'
-        async with session.get(url) as resp:
-            return await resp.json(content_type=None)
+    url = 'https://www.cbr-xml-daily.ru/daily_json.js'
+    response = await aiohttp_requests.requests.get(url)
+    data = await response.json(content_type=None)
+    return data
 
 
 def get_currency_based_on_rur():
-    loop = asyncio.get_event_loop()
-    data = loop.run_until_complete(request())
+    nest_asyncio.apply()
+    data = asyncio.run(request())
     curs_list = []
     curs_value = {}
     for currencies in data['Valute']:

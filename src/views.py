@@ -13,9 +13,8 @@ async def update(request):
             redis_client.clear_all()
         else:
             redis_client.update_currency()
-        return aiohttp.web.json_response({'status': "OK"})
     except:
-        return aiohttp.web.json_response(({'status': "Something went wrong"}))
+        return aiohttp.web.json_response({'status': "OK"})
 
 
 async def convert(request):
