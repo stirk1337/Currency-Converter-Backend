@@ -3,7 +3,7 @@ import redis_client
 
 
 async def pong(request):
-    return aiohttp.web.json_response({"status": "OK", "answer": "pong"})
+    return aiohttp.web.json_response({'status': 'OK', 'answer': 'pong'})
 
 
 async def update(request):
@@ -13,8 +13,9 @@ async def update(request):
             redis_client.clear_all()
         else:
             redis_client.update_currency()
-    except:
-        return aiohttp.web.json_response({'status': "OK"})
+        return aiohttp.web.json_response({'status': 'OK'})
+    except (KeyError, ValueError):
+        return aiohttp.web.json_response({'status': 'Something went wrong'})
 
 
 async def convert(request):
@@ -22,6 +23,6 @@ async def convert(request):
         from_ = request.query['from']
         to = request.query['to']
         amount = request.query['amount']
-        return aiohttp.web.json_response({'status': "OK", 'answer': round(redis_client.convert(from_, to, amount), 2)})
-    except:
-        return aiohttp.web.json_response({'status:': "Something went wrong."})
+        return aiohttp.web.json_response({'status': 'OK',   'answer': round(redis_client.convert(from_, to, amount), 2)})
+    except (KeyError, ValueError):
+        return aiohttp.web.json_response({'status': 'Something went wrong'})

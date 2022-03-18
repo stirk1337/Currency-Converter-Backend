@@ -29,4 +29,6 @@ def get_currency_based_on_rur():
 
 
 if __name__ == '__main__':
-    print(get_currency_based_on_rur())
+    from base_logger import logger
+    logger.debug(get_currency_based_on_rur())
+
