@@ -1,20 +1,20 @@
-# localhost:8000
+# Currency Converter Backend
 
-## Start 
-Run
+## Запуск
+Перейдите в корневую директорию и введите в терминал:
 ```
 docker-compose up
 ```
 
-
-## Tests
-Tests will run on app startup or you can run it manually with test_api.py
+## Домен
+Приложение будет доступно на:
+```
+localhost:8000
+```
+## Тесты
+Перейдите в директорию /test и введите в терминал: 
 ```
 python test_api.py
-```
-or
-```
-pytest test_api.py
 ```
 
 
