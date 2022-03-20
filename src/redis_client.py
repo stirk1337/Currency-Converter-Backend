@@ -1,6 +1,6 @@
 import redis
 
-from currency import get_currency_based_on_rur
+from src.currency import get_currency_based_on_rur
 
 redis_client = redis.Redis('redis_service', 6379, 0)
 

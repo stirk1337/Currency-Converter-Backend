@@ -1,6 +1,6 @@
 from aiohttp import web
 
-from routes import routes
+from src.routes import routes
 
 
 def setup():

@@ -4,7 +4,7 @@ import aiohttp_requests
 import nest_asyncio
 
 
-async def request():
+async def get_cbr_currency():
     url = 'https://www.cbr-xml-daily.ru/daily_json.js'
     response = await aiohttp_requests.requests.get(url)
     data = await response.json(content_type=None)
@@ -13,7 +13,7 @@ async def request():
 
 def get_currency_based_on_rur():
     nest_asyncio.apply()
-    data = asyncio.run(request())
+    data = asyncio.run(get_cbr_currency())
     curs_list = []
     curs_value = {}
     for currencies in data['Valute']:
@@ -28,7 +28,3 @@ def get_currency_based_on_rur():
                   ] = curs_value[curs_list[i]] / curs_value[curs_list[j]]
     return pairs
 
-
-if __name__ == '__main__':
-    from base_logger import logger
-    logger.debug(get_currency_based_on_rur())

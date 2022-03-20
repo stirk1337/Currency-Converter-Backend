@@ -1,7 +1,6 @@
-import views
+import src.views
 
 routes = [
-    ('GET', '/ping', views.pong),
-    ('GET', '/convert', views.convert),
-    ('POST', '/database', views.update),
+    ('GET', '/convert', src.views.convert),
+    ('POST', '/database', src.views.update_currency),
 ]

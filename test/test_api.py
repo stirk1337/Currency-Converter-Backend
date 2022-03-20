@@ -12,15 +12,6 @@ def test_db():
 
 
 @pytest.mark.asyncio
-async def test_ping_route():
-    url = 'http://localhost:8080/ping'
-    response = await aiohttp_requests.requests.get(url)
-    answer = await response.json(content_type=None)
-    assert answer['status'] == 'OK'
-    assert answer['answer'] == 'pong'
-
-
-@pytest.mark.asyncio
 async def test_merge_equals_zero():
     url = 'http://localhost:8080/database?merge=0'
     response = await aiohttp_requests.requests.post(url)
