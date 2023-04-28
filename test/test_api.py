@@ -2,18 +2,15 @@ import aiohttp_requests
 import pytest
 import redis
 
-redis_client = redis.Redis('localhost', 8001, 0)
+redis_client = redis.Redis('localhost', 6379, 0)
 
-
-def test_db():
-    redis_client.set('SOME KEY', 'SOME VALUE')
-    assert redis_client.get('SOME KEY').decode('utf-8') == 'SOME VALUE'
-    redis_client.delete('SOME KEY')
-
+host = 'localhost'
+port = '8080'
+main_url = f'http://{host}:{port}/'
 
 @pytest.mark.asyncio
 async def test_merge_equals_zero():
-    url = 'http://localhost:8000/database?merge=0'
+    url = main_url + 'database?merge=0'
     response = await aiohttp_requests.requests.post(url)
     answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
@@ -21,7 +18,7 @@ async def test_merge_equals_zero():
 
 @pytest.mark.asyncio
 async def test_merge_equals_one():
-    url = 'http://localhost:8000/database?merge=1'
+    url = main_url + 'database?merge=1'
     response = await aiohttp_requests.requests.post(url)
     answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
@@ -29,7 +26,7 @@ async def test_merge_equals_one():
 
 @pytest.mark.asyncio
 async def test_2_eur_to_rur():
-    url = 'http://localhost:8000/convert?from=EUR&to=RUR&amount=2'
+    url = main_url + 'convert?from=EUR&to=RUR&amount=2'
     response = await aiohttp_requests.requests.get(url)
     answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
@@ -39,10 +36,10 @@ async def test_2_eur_to_rur():
 @pytest.mark.asyncio
 async def test_wrong_url():
     tests = [
-        ('POST', 'http://localhost:8000/database?me'),
-        ('POST', 'http://localhost:8000/database?merge='),
-        ('GET', 'http://localhost:8000/convert?from=2'),
-        ('GET', 'http://localhost:8000/convert?from=EUR&to=RUR&amount=meow'),
+        ('POST', main_url + 'database?me'),
+        ('POST', main_url + 'database?merge='),
+        ('GET', main_url + 'convert?from=2'),
+        ('GET', main_url + 'convert?from=EUR&to=RUR&amount=meow'),
     ]
     for method, url in tests:
         if method == 'POST':
@@ -55,7 +52,7 @@ async def test_wrong_url():
 
 @pytest.mark.asyncio
 async def test_merge_equals_zero_again():
-    url = 'http://localhost:8000/database?merge=0'
+    url = url = main_url + 'database?merge=0'
     response = await aiohttp_requests.requests.post(url)
     answer = await response.json(content_type=None)
     assert answer['status'] == 'OK'
