@@ -1,34 +1,37 @@
-import redis
-
+import aioredis
 from src.currency import get_currency_based_on_rur
 
-redis_client = redis.Redis('redis_service', 6379, 0)
+REDIS_URL = 'redis://redis_service:6379'
 
 
-def clear_all():
-    redis_client.flushall()
+async def clear_all():
+    redis = aioredis.from_url(
+        REDIS_URL, encoding="utf-8", decode_responses=True
+    )
+    async with redis.client() as conn:
+        await conn.flushall()
 
 
-def update_currency():
-    data = get_currency_based_on_rur()
-    for value in data:
-        redis_client.set(value, data[value])
+async def update_currency():
+    redis = aioredis.from_url(
+        REDIS_URL, encoding="utf-8", decode_responses=True
+    )
+    data = await get_currency_based_on_rur()
+    async with redis.client() as conn:
+        for value in data:
+            await conn.set(value, data[value])
 
 
-def convert(from_, to, amount):
-    data = redis_client.get(from_ + to)
-    data_reverse = redis_client.get(to + from_)
-    if data is not None:
-        return float(redis_client.get(from_ + to)) * float(amount)
-    elif data_reverse is not None:
-        return 1/float(redis_client.get(to + from_)) * float(amount)
-    else:
-        raise KeyError
-
-
-if __name__ == '__main__':
-    from base_logger import logger
-    logger.debug(update_currency())
-    logger.debug(convert('AUD', 'RUR', 30))
-
-redis_client.close()
+async def convert(from_, to, amount):
+    redis = aioredis.from_url(
+        REDIS_URL, encoding="utf-8", decode_responses=True
+    )
+    async with redis.client() as conn:
+        data = await conn.get(from_ + to)
+        data_reverse = await conn.get(to + from_)
+        if data is not None:
+            return float(await conn.get(from_ + to)) * float(amount)
+        elif data_reverse is not None:
+            return 1/float(await conn.get(to + from_)) * float(amount)
+        else:
+            raise KeyError
