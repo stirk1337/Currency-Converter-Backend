@@ -14,7 +14,7 @@ localhost:8000
 ## Тесты
 Перейдите в директорию /test и введите в терминал: 
 ```
-python test_api.py
+python3 test_api.py
 ```
 
 
