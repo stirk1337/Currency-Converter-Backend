@@ -34,6 +34,7 @@ async def test_merge_equals_one_get():
         async with session.get(url) as response:
             assert response.status == 405
 
+
 @pytest.mark.asyncio
 async def test_2_eur_to_rur():
     async with aiohttp.ClientSession() as session:
@@ -68,12 +69,14 @@ async def test_wrong_url_for_convert_route_get():
         async with session.get(url) as response:
             assert response.status == 422
 
+
 @pytest.mark.asyncio
 async def test_wrong_url_for_convert_route_post():
     async with aiohttp.ClientSession() as session:
         url = MAIN_URL + 'convert?xd'
         async with session.post(url) as response:
             assert response.status == 405
+
 
 @pytest.mark.asyncio
 async def test_wrong_server_url():

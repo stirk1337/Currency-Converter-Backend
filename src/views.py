@@ -1,6 +1,6 @@
 import aiohttp
 from pydantic import BaseModel, validator, ValidationError
-import src.redis_client
+from src.redis_client import RedisClient
 
 
 class MergeRequest(BaseModel):
@@ -21,10 +21,11 @@ async def update_currency(request):
                 reason='Invalid value for merge parameter'
         )
 
+    redis_client = RedisClient()
     if merge_request.merge == 0:
-        await src.redis_client.clear_all()
+        await redis_client.clear_all()
     else:
-        await src.redis_client.update_currency()
+        await redis_client.update_currency()
     return aiohttp.web.json_response({'status': 'OK'})
 
 
@@ -45,8 +46,9 @@ async def convert(request):
         raise aiohttp.web.HTTPUnprocessableEntity(
                 reason='Invalid value for from, to, amount parameters'
         )
+    redis_client = RedisClient()
     try:
-        answer = await src.redis_client.convert(
+        answer = await redis_client.convert(
             convert_request.from_,
             convert_request.to,
             convert_request.amount
