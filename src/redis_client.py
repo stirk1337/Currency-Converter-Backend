@@ -1,28 +1,16 @@
 import aioredis
 from src.currency import get_currency_based_on_rur
 import contextvars
-from aiohttp.web import middleware
-
 
 REDIS_URL = 'redis://redis_service:6379'
 redis_var = contextvars.ContextVar('redis_var')
 
 
-@middleware
-async def redis_middleware(request, handler):
-    redis = await aioredis.from_url(
-        REDIS_URL, encoding="utf-8", decode_responses=True
-    )
-    redis_var.set(redis)
-    try:
-        return await handler(request)
-    finally:
-        await redis.close()
-
-
 class RedisClient():
-    def __init__(self):
-        self.redis = redis_var.get()
+    async def async_init(self):
+        self.redis = await aioredis.from_url(REDIS_URL,
+                                             encoding="utf-8",
+                                             decode_responses=True)
 
     async def clear_all(self):
         async with self.redis.client() as conn:
